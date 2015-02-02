@@ -14,11 +14,11 @@ namespace AspNetIdentity.WebApi.Validators
         {
 
             IdentityResult result = await base.ValidateAsync(password);
-           
-            if (password.Contains("12345"))
+
+            if (password.Contains("abcdef") || password.Contains("123456"))
             {
                 var errors = result.Errors.ToList();
-                errors.Add("Password can not contain numeric sequences");
+                errors.Add("Password can not contain sequence of chars");
                 result = new IdentityResult(errors);
             }
 

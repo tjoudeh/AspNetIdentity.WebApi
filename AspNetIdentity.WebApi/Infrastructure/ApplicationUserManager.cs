@@ -24,7 +24,7 @@ namespace AspNetIdentity.WebApi.Infrastructure
             // Configure validation logic for usernames
             appUserManager.UserValidator = new UserValidator<ApplicationUser>(appUserManager)
             {
-                AllowOnlyAlphanumericUserNames = false,
+                AllowOnlyAlphanumericUserNames = true,
                 RequireUniqueEmail = true
             };
 
@@ -37,7 +37,7 @@ namespace AspNetIdentity.WebApi.Infrastructure
                 RequireLowercase = true,
                 RequireUppercase = true,
             };
-
+            
             appUserManager.EmailService = new AspNetIdentity.WebApi.Services.EmailService();
 
             var dataProtectionProvider = options.DataProtectionProvider;

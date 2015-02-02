@@ -16,10 +16,11 @@ namespace AspNetIdentity.WebApi.Controllers
     public class AccountsController : BaseApiController
     {
 
-        //[Authorize]
         [Route("users")]
         public IHttpActionResult GetUsers()
         {
+            var identity = User.Identity as System.Security.Claims.ClaimsIdentity;
+
             return Ok(this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)));
         }
 
