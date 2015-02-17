@@ -16,18 +16,21 @@ namespace AspNetIdentity.WebApi.Controllers
     public class AccountsController : BaseApiController
     {
 
+        [Authorize]
         [Route("users")]
         public IHttpActionResult GetUsers()
         {
+            //Only SuperAdmin or Admin can delete users (Later when implement roles)
             var identity = User.Identity as System.Security.Claims.ClaimsIdentity;
 
             return Ok(this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)));
         }
 
-        //[Authorize]
+        [Authorize]
         [Route("user/{id:guid}", Name = "GetUserById")]
         public async Task<IHttpActionResult> GetUser(string Id)
         {
+            //Only SuperAdmin or Admin can delete users (Later when implement roles)
             var user = await this.AppUserManager.FindByIdAsync(Id);
 
             if (user != null)
@@ -39,10 +42,11 @@ namespace AspNetIdentity.WebApi.Controllers
 
         }
 
-        //[Authorize]
+        [Authorize]
         [Route("user/{username}")]
         public async Task<IHttpActionResult> GetUserByName(string username)
         {
+            //Only SuperAdmin or Admin can delete users (Later when implement roles)
             var user = await this.AppUserManager.FindByNameAsync(username);
 
             if (user != null)
@@ -54,7 +58,7 @@ namespace AspNetIdentity.WebApi.Controllers
 
         }
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [Route("create")]
         public async Task<IHttpActionResult> CreateUser(CreateUserBindingModel createUserModel)
         {
@@ -96,7 +100,7 @@ namespace AspNetIdentity.WebApi.Controllers
 
         }
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [HttpGet]
         [Route("ConfirmEmail", Name = "ConfirmEmailRoute")]
         public async Task<IHttpActionResult> ConfirmEmail(string userId = "", string code = "")
@@ -119,7 +123,7 @@ namespace AspNetIdentity.WebApi.Controllers
             }
         }
 
-        //[Authorize]
+        [Authorize]
         [Route("ChangePassword")]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
         {
@@ -138,7 +142,7 @@ namespace AspNetIdentity.WebApi.Controllers
             return Ok();
         }
 
-        //[Authorize]
+        [Authorize]
         [Route("user/{id:guid}")]
         public async Task<IHttpActionResult> DeleteUser(string id)
         {
