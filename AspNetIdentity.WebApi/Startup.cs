@@ -19,9 +19,6 @@ namespace AspNetIdentity.WebApi
 {
     public class Startup
     {
-        private static OAuthBearerAuthenticationOptions OAuthBearerOptions = null;
-        private static OAuthAuthorizationServerOptions OAuthServerOptions = null;
-
         public void Configuration(IAppBuilder app)
         {
             HttpConfiguration httpConfig = new HttpConfiguration();

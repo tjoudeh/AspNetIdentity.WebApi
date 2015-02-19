@@ -44,7 +44,7 @@ namespace AspNetIdentity.WebApi.Providers
             }
 
             ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager, "JWT");
-        
+
             var ticket = new AuthenticationTicket(oAuthIdentity, null);
             
             context.Validated(ticket);
