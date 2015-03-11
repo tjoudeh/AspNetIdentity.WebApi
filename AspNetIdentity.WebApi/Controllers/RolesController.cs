@@ -12,6 +12,7 @@ using System.Web.Http;
 
 namespace AspNetIdentity.WebApi.Controllers
 {
+    [Authorize(Roles="Admin")]
     [RoutePrefix("api/roles")]
     public class RolesController : BaseApiController
     {
@@ -28,6 +29,14 @@ namespace AspNetIdentity.WebApi.Controllers
 
             return NotFound();
 
+        }
+
+        [Route("", Name = "GetAllRoles")]
+        public IHttpActionResult GetAllRoles()
+        {
+            var roles = this.AppRoleManager.Roles;
+
+            return Ok(roles);
         }
 
         [Route("create")]
@@ -78,19 +87,16 @@ namespace AspNetIdentity.WebApi.Controllers
         [Route("ManageUsersInRole")]
         public async Task<IHttpActionResult> ManageUsersInRole(UsersInRoleModel model)
         {
-
             var role = await this.AppRoleManager.FindByIdAsync(model.Id);
-
+            
             if (role == null)
             {
                 ModelState.AddModelError("", "Role does not exist");
                 return BadRequest(ModelState);
             }
 
-
             foreach (string user in model.EnrolledUsers)
             {
-
                 var appUser = await this.AppUserManager.FindByIdAsync(user);
 
                 if (appUser == null)
@@ -106,7 +112,6 @@ namespace AspNetIdentity.WebApi.Controllers
                     if (!result.Succeeded)
                     {
                         ModelState.AddModelError("", String.Format("User: {0} could not be added to role", user));
-                        //return GetErrorResult(result);
                     }
 
                 }
@@ -114,7 +119,6 @@ namespace AspNetIdentity.WebApi.Controllers
 
             foreach (string user in model.RemovedUsers)
             {
-
                 var appUser = await this.AppUserManager.FindByIdAsync(user);
 
                 if (appUser == null)
@@ -128,9 +132,7 @@ namespace AspNetIdentity.WebApi.Controllers
                 if (!result.Succeeded)
                 {
                     ModelState.AddModelError("", String.Format("User: {0} could not be removed from role", user));
-                    //return GetErrorResult(result);
                 }
-
             }
 
             if (!ModelState.IsValid)
@@ -139,7 +141,6 @@ namespace AspNetIdentity.WebApi.Controllers
             }
 
             return Ok();
-
         }
     }
 }

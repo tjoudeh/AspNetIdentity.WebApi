@@ -20,6 +20,8 @@ namespace AspNetIdentity.WebApi.Migrations
             //  This method will be called after migrating to the latest version.
 
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
 
             var user = new ApplicationUser()
             {
@@ -33,6 +35,17 @@ namespace AspNetIdentity.WebApi.Migrations
             };
 
             manager.Create(user, "MySuperP@ss!");
+
+            if (roleManager.Roles.Count() == 0)
+            {
+                roleManager.Create(new IdentityRole { Name = "SuperAdmin" });
+                roleManager.Create(new IdentityRole { Name = "Admin"});
+                roleManager.Create(new IdentityRole { Name = "User"});
+            }
+
+            var adminUser = manager.FindByName("SuperPowerUser");
+
+            manager.AddToRoles(adminUser.Id, new string[] { "SuperAdmin", "Admin" });
         }
     }
 }
