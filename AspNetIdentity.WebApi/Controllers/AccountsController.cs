@@ -184,7 +184,7 @@ namespace AspNetIdentity.WebApi.Controllers
             
             var currentRoles = await this.AppUserManager.GetRolesAsync(appUser.Id);
 
-            var rolesNotExists = rolesToAssign.Except(this.AppRoleManager.Roles.Select(x => x.Name)).ToArray();
+            var rolesNotExists = rolesToAssign.Except(this.AppRoleManager.Roles.Select(x => x.Name), StringComparer.OrdinalIgnoreCase).ToArray();
 
             if (rolesNotExists.Count() > 0) {
 
